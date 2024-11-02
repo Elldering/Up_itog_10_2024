@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <title>List of Entities</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>List of Entities</h1>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Details</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entity : ${entities}">
+      <td th:text="${entity._id}">1</td>
+      <td th:text="${entity}">Entity Details</td>
+      <td>
+        <a th:href="@{/models/{id}/edit(id=${entity._id})}" class="btn btn-warning">Edit</a>
+        <form th:action="@{/models/{id}/delete(id=${entity._id})}" method="post" style="display:inline;">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <a th:href="@{/models/new}" class="btn btn-primary">Add New Entity</a>
+</div>
+</body>
+</html>

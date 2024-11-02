@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Редактирование ' + ${modelName}"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link th:href="@{/css/list.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/CSS_my/new_style.css}">
+</head>
+<body>
+<div class="container">
+    <h1 th:text="'Редактирование ' + ${modelName}"></h1>
+
+    <form th:action="@{/{modelName}/{id}(id=${entity.id}, modelName=${modelName})}" th:object="${entity}" method="post">
+        <div th:each="field1, iterStat : ${fields}">
+
+            <!-- Поля для статуса -->
+            <div th:if="${field1 == 'status'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{status}" class="form-control">
+                    <option th:value="${true}" th:text="${true}" th:selected="${entity.status != null}"></option>
+                    <option th:value="${false}" th:text="${false}" th:selected="${entity.status != null}"></option>
+                </select>
+            </div>
+
+
+            <div th:if="${field1 == 'tasks'}">
+                <label th:text="${field1}">Tasks</label>
+                <select th:name="tasks" multiple="multiple" class="form-control">
+                    <option th:each="task : ${tasks1}"
+                            th:value="${task.id}"
+                            th:text="${task.name}"
+                            th:selected="${entity.tasks != null and entity.tasks.contains(task)}">
+                    </option>
+                </select>
+            </div>
+            <div th:if="${field1 == 'task'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{task}" class="form-control">
+                    <option th:each="task3 : ${tasks1}"
+                            th:value="${task3.id}"
+                            th:text="${task3.name}"
+                            th:selected="${entity.task != null and entity.task.id == task3.id}">
+                    </option>
+                </select>
+            </div>
+            <div th:if="${field1 == 'project'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{project}" class="form-control">
+                    <option th:each="project2 : ${projects}"
+                            th:value="${project2.id}"
+                            th:text="${project2.name}"
+                            th:selected="${entity.project != null and entity.project.id == project2.id}">
+                    </option>
+                </select>
+            </div>
+
+            <div th:if="${field1 == 'status_id'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{status_id}" class="form-control">
+                    <option th:each="status2 : ${statuses}"
+                            th:value="${status2.id}"
+                            th:text="${status2.name}"
+                            th:selected="${entity.status_id != null and entity.status_id.id == status2.id}">
+                    </option>
+                </select>
+            </div>
+            <!-- Поля для активности -->
+            <div th:if="${field1 == 'active'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{active}" class="form-control">
+                    <option th:value="${true}" th:text="${true}" th:selected="${entity.active != null}"></option>
+                    <option th:value="${false}" th:text="${false}" th:selected="${entity.active != null}"></option>
+                </select>
+            </div>
+
+            <!-- Поля для роли -->
+            <div th:if="${field1 == 'role'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{role}" class="form-control">
+                    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}" th:selected="${entity.role != null and entity.role.id == role.id}"></option>
+                </select>
+            </div>
+            <!-- Поля для роли -->
+            <div th:if="${field1 == 'user'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{user}" class="form-control">
+                    <option th:each="user2 : ${users}"
+                            th:value="${user2.id}"
+                            th:text="${user2.name}"
+                            th:selected="${entity.user != null and entity.user.id == user2.id}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Поля для пароля -->
+            <div th:if="${field1 == 'password'}" class="form-group row">
+                <div class="col-md-6">
+                    <label th:text="${field1}"></label>
+                    <input type="text" th:value="${entity.password}" class="form-control" readonly/>
+                </div>
+                <div class="col-md-6">
+                    <label>Новый пароль</label>
+                    <input type="password" name="newPassword" placeholder="Введите новый пароль" class="form-control"/>
+                </div>
+            </div>
+
+            <!-- Поля для разрешений -->
+            <div th:if="${field1 == 'permissions'}">
+
+                <div class="form-group">
+                    <label>Разрешения</label>
+                    <select name="newPermissions" multiple class="form-control3">
+
+                        <option th:each="permission : ${allPermissions}"
+                                th:value="${permission.id}"
+                                th:text="${permission.name}"
+                                th:selected="${entity.permissions.contains(permission)}">
+                        </option>
+                    </select>
+
+                </div>
+            </div>
+
+
+            <!-- Общие поля, которые не включают специфичные поля -->
+            <div th:if="${field1 != 'role'&&field1 != 'tasks' &&field1 != 'id' && field1 != 'password'  && field1 != 'project'  && field1 != 'status_id' && field1 != 'status' && field1 != 'active' && field1 != 'permissions'&& field1 != 'user' && field1 != 'task'}">
+                <label th:text="${field1}"></label>
+                <input type="text" th:name="${field1}" th:value="${entity[field1]}" class="form-control"/>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>

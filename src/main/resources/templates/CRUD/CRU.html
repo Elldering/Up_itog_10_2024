@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Создание модели: ' + ${modelName}"></title>
+
+    <link rel="stylesheet" th:href="@{/CSS_my/new_style.css}">
+</head>
+<body>
+<div th:if="${param.error}">
+    Неверное имя пользователя или пароль.
+</div>
+<div class="container">
+    <h1 th:text="'Создание модели: ' + ${modelName}"></h1>
+    <form th:action="@{/{modelName}/create(modelName=${modelName})}" th:object="${entity}" method="post">
+        <div th:each="field1, iterStat : ${fields}">
+
+
+            <!-- Поле для обычных свойств -->
+            <div th:if="${field1 != 'role' && field1 != 'status'&& field1 != 'id'&& field1 != 'tasks'&& field1 != 'status_id'&& field1 != 'project'&& field1 != 'task' && field1 != 'active'&& field1 != 'permissions' && field1 != 'user'&& field1 != 'priority'}">
+                <label th:text="${field1}"></label>
+                <input type="text" th:name="${field1}"
+                       th:value="${entity[field1]}" class="form-control"/>
+            </div>
+
+            <div th:if="${field1 == 'task'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{task}" class="form-control">
+                    <option th:each="task3 : ${tasks1}"
+                            th:value="${task3.id}"
+                            th:text="${task3.name}"
+                            th:selected="${entity.task != null and entity.task.id == task3.id}">
+                    </option>
+                </select>
+            </div>
+            <!-- Поле для выбора роли -->
+            <div th:if="${field1 == 'role'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{role}" class="form-control">
+                    <option th:each="role : ${roles}"
+                            th:value="${role.id}"
+                            th:text="${role.name}"
+                            th:selected="${entity.role != null and entity.role.id == role.id}">
+                    </option>
+                </select>
+            </div>
+            <!-- Поле для выбора user -->
+            <div th:if="${field1 == 'priority'}">
+                <label th:text="${field1}"></label>
+                <input type="number" th:field="*{priority}"  min="1" max="5" class="form-control" required>
+
+            </div>
+
+            <!-- Поле для выбора user -->
+            <div th:if="${field1 == 'user'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{user}" class="form-control">
+                    <option th:each="user2 : ${users}"
+                            th:value="${user2.id}"
+                            th:text="${user2.name}"
+                            th:selected="${entity.user != null and entity.user.id == user2.id}">
+                    </option>
+                </select>
+            </div>
+
+
+
+
+
+            <div th:if="${field1 == 'project'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{project}" class="form-control">
+                    <option th:each="project2 : ${projects}"
+                            th:value="${project2.id}"
+                            th:text="${project2.name}"
+                            th:selected="${entity.project != null and entity.project.id == project2.id}">
+                    </option>
+                </select>
+            </div>
+
+            <div th:if="${field1 == 'status_id'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{status_id}" class="form-control">
+                    <option th:each="status2 : ${statuses}"
+                            th:value="${status2.id}"
+                            th:text="${status2.name}"
+                            th:selected="${entity.status_id != null and entity.status_id.id == status2.id}">
+                    </option>
+                </select>
+            </div>
+
+
+            <!-- Поле для выбора status -->
+            <div th:if="${field1 == 'status'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{status}" class="form-control">
+                    <option
+                            th:value="${true}"
+                            th:text="${true}"
+                            th:selected="${entity.status != null }">
+                    </option>
+                    <option
+                            th:value="${false}"
+                            th:text="${false}"
+                            th:selected="${entity.status != null }">
+                    </option>
+                </select>
+            </div>
+
+
+            <!-- Поле для выбора status -->
+            <div th:if="${field1 == 'active'}">
+                <label th:text="${field1}"></label>
+                <select th:field="*{active}" class="form-control">
+                    <option
+                            th:value="${true}"
+                            th:text="${true}"
+                            th:selected="${entity.active != null }">
+                    </option>
+                    <option
+                            th:value="${false}"
+                            th:text="${false}"
+                            th:selected="${entity.active != null }">
+                    </option>
+                </select>
+            </div>
+            <div th:if="${field1 == 'tasks'}">
+                <label th:text="${field1}">Tasks</label>
+                <select th:name="tasks" multiple="multiple" class="form-control">
+                    <option th:each="task : ${tasks1}"
+                            th:value="${task.id}"
+                            th:text="${task.name}"
+                            th:selected="${entity.tasks != null and entity.tasks.contains(task)}">
+                    </option>
+                </select>
+            </div>
+            <div th:if="${field1 == 'permissions'}">
+                <label th:text="${field1}">Permissions</label>
+                <select th:field="*{permissions}" multiple="multiple" class="form-control3">
+                    <option th:each="perm : ${permissions}"
+                            th:value="${perm.id}"
+                            th:text="${perm.name}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </form>
+
+</div>
+</body>
+</html>

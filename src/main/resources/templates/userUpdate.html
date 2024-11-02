@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактирование пользователя</title>
+</head>
+<body>
+<div>
+  <h1>Редактирование пользователя</h1>
+  <form th:action="@{'/admin/' + ${user.id} + '/update'}" method="post">
+    <label>Электронная почта:
+      <input type="email" th:value="${user.email}" name="email" required/>
+    </label>
+    <div>
+      <h2>Роли</h2>
+      <div th:each="role : ${roles}">
+        <input type="checkbox" th:id="${role}" th:name="roles" th:value="${role}"
+               th:checked="${user.roles.contains(role)}"/>
+        <label th:for="${role}" th:text="${role}">Роль</label>
+      </div>
+    </div>
+    <button type="submit">Сохранить</button>
+  </form>
+  <a th:href="@{'/admin/users'}">Назад к списку</a>
+</div>
+</body>
+</html>

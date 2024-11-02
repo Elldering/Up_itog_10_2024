@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Просмотр: ' + ${modelName}"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/CSS_my/new_style.css}">
+</head>
+<body>
+<div class="container">
+    <div th:if="${entity != null}">
+        <h1 th:text="'Просмотр: ' + ${modelName}"></h1>
+
+        <form th:action="@{/${modelName}/${entity.id}}" th:object="${entity}" method="post">
+            <div th:each="field, iterStat : ${fields}">
+
+                <label th:text="${field}"></label>
+                <label th:if="${field == 'role'}" th:text="${entity.role != null ? entity.role.name : 'Без роли'}" class="form-control"></label>
+                <label th:if="${field != 'role'}" th:text="${fieldValues[iterStat.index]}" class="form-control"></label>
+            </div>
+        </form>
+        <a th:href="@{/${modelName}}">Назад</a>
+    </div>
+
+    <div th:if="${entity == null}">
+        <p>Entity not found</p>
+    </div>
+</div>
+</body>
+</html>

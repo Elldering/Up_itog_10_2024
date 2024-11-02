@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="'Просмотр списка моделей: ' + ${modelName}"></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/CSS_my/new_style.css}">
+</head>
+<body class="theme-body">
+<div class="container card p-4 my-4">
+  <div th:if="${validationErrors != null}">
+    <ul>
+      <li th:each="error : ${validationErrors}" th:text="${error.defaultMessage}"></li>
+    </ul>
+  </div>
+  <h1 th:text="'Модель: ' + ${modelName}"></h1>
+
+  <!-- Форма поиска -->
+  <form th:action="@{/people/search}" method="get" class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" name="query" placeholder="Введите имя" th:value="${searchQuery}" aria-label="Search">
+    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Поиск</button>
+  </form>
+
+  <!-- Кнопка для добавления новой записи -->
+  <a th:href="@{/{modelName}/new(modelName=${modelName})}" th:text="'Добавить новую запись в модель: ' + ${modelName}" class="btn btn-primary mt-3"></a>
+  <table class="table mt-3 table-hover">
+    <thead>
+    <tr>
+      <th th:each="field : ${fields}" th:text="${field}"></th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entity : ${entities}">
+      <td th:each="field : ${fields}">
+        <span th:if="${field == 'role'}" th:text="${entity.role != null ? entity.role.name : 'Без role'}"></span>
+        <span th:if="${field == 'user'}" th:text="${entity.user != null ? entity.user.name : 'Без user'}"></span>
+        <span th:if="${field == 'project'}" th:text="${entity.project != null ? entity.project.name : 'Без project'}"></span>
+        <span th:if="${field == 'status_id'}" th:text="${entity.status_id != null ? entity.status_id.name : 'Без status_id'}"></span>
+        <span th:if="${field == 'task'}" th:text="${entity.task != null ? entity.task.name : 'Без task'}"></span>
+
+        <span th:if="${field == 'tasks'}">
+          <select th:name="tasks" multiple="multiple" class="form-control">
+                    <option th:each="task : ${entity.tasks}"
+                            th:value="${task.id}"
+                            th:text="${task.name}"
+                            th:selected="${entity.tasks != null and entity.tasks.contains(task)}">
+                    </option>
+                </select>
+        </span>
+
+
+        <span th:if="${field == 'permissions'}">
+          <select th:name="permissions" multiple="multiple" class="form-control">
+                    <option th:each="task : ${entity.permissions}"
+                            th:value="${task.id}"
+                            th:text="${task.name}"
+                            th:selected="${entity.permissions != null and entity.permissions.contains(task)}">
+                    </option>
+                </select>
+        </span>
+        <span th:if="${field == 'password'}">
+          <input th:value="${entity.password}" type="password" name="newPassword" class="form-control"/>
+        </span>
+        <span th:if="${field != 'role' && field != 'password'&& field != 'task'&& field != 'user'&& field != 'project'&& field != 'status_id'&& field != 'tasks'&& field != 'permissions'}" th:text="${fieldHelper.getFieldValue(entity, field)}"></span>
+      </td>
+      <td>
+        <a th:href="@{/{modelName}/{id}/show(id=${fieldHelper.getFieldValue(entity, 'id')}, modelName=${modelName})}" class="btn btn-info btn-sm">Просмотр</a>
+        <a th:href="@{/{modelName}/{id}/edit(id=${fieldHelper.getFieldValue(entity, 'id')}, modelName=${modelName})}" class="btn btn-warning btn-sm">Редактировать</a>
+        <form th:action="@{/{modelName}/{id}/delete(id=${fieldHelper.getFieldValue(entity, 'id')}, modelName=${modelName})}" method="post" style="display:inline">
+          <input type="hidden" name="_method" value="delete"/>
+          <button class="btn btn-danger btn-sm">Удалить</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

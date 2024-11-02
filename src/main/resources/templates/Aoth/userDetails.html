@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали пользователя</title>
+</head>
+<body>
+<h1 th:text="'Пользователь: ' + ${user.username}"></h1>
+<p th:text="'Активный: ' + ${user.active}"></p>
+<h2>Роли:</h2>
+<ul>
+    <li th:each="role : ${user.roles}" th:text="${role}"></li>
+</ul>
+<a th:href="@{/admin/{id}/edit(id=${user.id})}" class="btn btn-warning">Редактировать</a>
+<a th:href="@{/admin/users}" class="btn btn-success">Назад</a>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipl3emeC7SUhhNIlExwSgxJznc+qIKaxoMKLUxbyj4gNRYdB7L" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/CSS_my/new_style.css}">
+    <style>
+        /* Your custom styles go here */
+        body {
+            background: linear-gradient(90deg, #40061d 0%, #12253d 58%);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            color: white;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            /* padding: 2rem; */
+            margin: 0;
+            border-radius: 1rem;
+            /* background: rgb(47 35 35 / 43%); */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            /* box-shadow: 0 4px 20px 7px rgba(0, 0, 0, 0.2); */
+            text-align: center;
+            min-height: 100vh;
+            min-width: -webkit-fill-available;
+            position: relative;
+            z-index: 1;
+        }
+
+        h5 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .form-label {
+            font-size: 1rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: #262732;
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #4d4ae8;
+            box-shadow: 0 0 8px rgba(77, 74, 232, 0.4);
+            outline: none;
+        }
+
+        a {
+            color: white;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #4d4ae8;
+            border: none;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #3a38cc;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .text-center a {
+            color: #4d4ae8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .text-center a:hover {
+            color: #3a38cc;
+        }
+
+        /* Circle animation background */
+        .circle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(251, 71, 71, 0.78);
+            box-shadow: 0 0 30px rgba(255, 69, 0, 1), 0 0 60px rgba(255, 140, 0, 0.8), 0 0 90px rgba(255, 215, 0, 0.5);
+            /* animation: pulse 5s infinite alternate; */
+            /* transition: transform 0.2s ease; */
+        }
+
+        .link-primary {
+            color: #050505;
+            background-color: white;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<div class="card2">
+    <div class="card">
+        <form th:action="@{/registration}" method="post">
+            <div class="form-group">
+                <label for="username" class="form-label">Логин:</label>
+                <input type="text" class="form-control" id="username" name="username" />
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Пароль:</label>
+                <input type="password" class="form-control" id="password" name="password" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+
+</html>

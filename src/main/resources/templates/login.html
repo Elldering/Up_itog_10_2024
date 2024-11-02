@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Анимация с полиморфными кружочками</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+
+      background: linear-gradient(90deg, #40061d 0%, #12253d 58%);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      color: white;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .card2 {
+      /* padding: 2rem; */
+      margin: 0;
+      border-radius: 1rem;
+      /* background: rgb(47 35 35 / 43%); */
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      /* box-shadow: 0 4px 20px 7px rgba(0, 0, 0, 0.2); */
+      text-align: center;
+      min-height: 100vh;
+      min-width: -webkit-fill-available;
+      position: relative;
+      z-index: 1;
+    }
+    .card {
+      padding: 2rem;
+      display: flex;
+      place-self: center;
+      border-radius: 1rem;
+      background: rgb(47 35 35 / 43%);
+      max-width: 400px;
+      box-shadow: 0 4px 20px 7px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      flex-direction: column;
+      align-content: space-around;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h5 {
+      font-size: 1.5rem;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .form-label {
+      font-size: 1rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      color: #262732;
+      background-color: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #4d4ae8;
+      box-shadow: 0 0 8px rgba(77, 74, 232, 0.4);
+      outline: none;
+    }
+    a{
+      color: white;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #4d4ae8;
+      border: none;
+      border-radius: 0.5rem;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #3a38cc;
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .text-center a {
+      color: #4d4ae8;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .text-center a:hover {
+      color: #3a38cc;
+    }
+
+    /* Circle animation background */
+    .circle-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .link-primary{
+      color: #050505;
+      background-color: white;
+      border-radius: 5px;
+      padding: 1rem;
+      margin: 20px;
+    }
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(251, 71, 71, 0.78);
+      box-shadow: 0 0 30px rgba(255, 69, 0, 1), 0 0 60px rgba(255, 140, 0, 0.8), 0 0 90px rgba(255, 215, 0, 0.5);
+      /* animation: pulse 5s infinite alternate; */
+      /* transition: transform 0.2s ease; */
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="circle-container" id="circleContainer"></div>
+
+<div class="card2">
+  <h5>Вход</h5>
+  <div class="card">
+    <h3 class="card-title">login</h3>
+    <form th:action="@{/login}" method="post">
+      <div class="mb-3">
+        <label for="username" class="form-label">Логин:</label>
+        <input type="text" class="form-control" id="username" name="username" required />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Пароль:</label>
+        <input type="password" class="form-control" id="password" name="password" required />
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Войти</button>
+      </div>
+    </form>
+    <a href="/registration" class="link-primary">Регистрация</a>
+  </div>
+
+
+</div>
+<script>
+  const circleContainer = document.getElementById("circleContainer");
+  const circleCount = 30;
+
+  function random(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function createCircle() {
+    const circle = document.createElement("div");
+    circle.classList.add("circle");
+    const size = random(70, 110);
+    circle.style.width = `${size}px`;
+    circle.style.height = `${size}px`;
+    circle.style.top = `${random(0, window.innerHeight - size)}px`;
+    circle.style.left = `${random(0, window.innerWidth - size)}px`;
+    circle.dataset.dx = random(-2, 1);
+    circle.dataset.dy = random(-2, 1);
+    circleContainer.appendChild(circle);
+  }
+
+  function animateCircles() {
+    const circles = document.querySelectorAll(".circle");
+    circles.forEach(circle => {
+      let x = parseFloat(circle.style.left);
+      let y = parseFloat(circle.style.top);
+      let dx = parseFloat(circle.dataset.dx);
+      let dy = parseFloat(circle.dataset.dy);
+      const radius = parseFloat(circle.style.width) / 2;
+
+      x += dx;
+      y += dy;
+
+      // Отражение от границ экрана
+      if (x + radius * 2 > window.innerWidth || x < 0) dx = -dx;
+      if (y + radius * 2 > window.innerHeight || y < 0) dy = -dy;
+
+      circle.style.left = `${x}px`;
+      circle.style.top = `${y}px`;
+      circle.dataset.dx = dx;
+      circle.dataset.dy = dy;
+    });
+
+    requestAnimationFrame(animateCircles);
+  }
+
+  // Создание кружочков и запуск анимации
+  for (let i = 0; i < circleCount; i++) {
+    createCircle();
+  }
+  animateCircles();
+</script>
+
+
+</body>
+</html>
